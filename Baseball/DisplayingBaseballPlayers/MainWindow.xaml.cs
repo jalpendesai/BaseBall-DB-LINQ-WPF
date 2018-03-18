@@ -45,14 +45,38 @@ namespace DisplayingBaseballPlayers
         {
             playerDataGrid.ItemsSource = db.Players.Local;
             btnBack.Visibility = Visibility.Hidden;
+            errortxt.Text = "";
+            txtLastName.Text = "";
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            playerDataGrid.ItemsSource = from baseball in db.Players.Local
-                                         where baseball.LastName.ToLower() == txtLastName.Text.ToLower()
-                                         orderby baseball.FirstName
-                                         select baseball;
+            //Checking if input String is Empty
+            if(txtLastName.Text == null)
+            {
+                errortxt.Text = "Enter lastName";
+            }
+
+            //Check if the input String is in DataBase
+            var errorCheck = (db.Players.Any(n => n.LastName.ToLower() == txtLastName.Text.ToLower()));
+            if (errorCheck)
+            {
+                errortxt.Text = "Success";
+            }
+            else
+            {
+                
+                errortxt.Text = "Sorry! Cannot Find";
+            }
+
+           //Displaying Player Details
+                playerDataGrid.ItemsSource = from baseball in db.Players.Local
+                                             where baseball.LastName.ToLower() == txtLastName.Text.ToLower()
+                                             orderby baseball.FirstName
+                                             select baseball;
+                
+           
+            
             txtLastName.Text = "";
             btnBack.Visibility = Visibility.Visible;
         }
