@@ -50,7 +50,7 @@ namespace DisplayingBaseballPlayers
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             playerDataGrid.ItemsSource = from baseball in db.Players.Local
-                                         where baseball.LastName == txtLastName.Text
+                                         where baseball.LastName.ToLower() == txtLastName.Text.ToLower()
                                          orderby baseball.FirstName
                                          select baseball;
             txtLastName.Text = "";
